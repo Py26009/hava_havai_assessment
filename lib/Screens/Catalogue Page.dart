@@ -8,6 +8,7 @@ import 'package:hava_havai_assessment/Screens/Carts%20Page.dart';
 
 import '../Bloc/AddToCartBloc/add cart bloc.dart';
 import '../Bloc/AddToCartBloc/add cart event.dart';
+import '../Bloc/AddToCartBloc/add cart state.dart';
 
 class CataloguePage extends StatefulWidget {
   const CataloguePage({super.key});
@@ -40,36 +41,50 @@ class _CataloguePageState extends State<CataloguePage> {
           Padding(
             padding: const EdgeInsets.all(11.0),
             child: Stack(
-              children:[ InkWell(
-                onTap: (){
-                  Navigator.push(context, MaterialPageRoute(builder: (context)=>CartsPage()));
-                },
-                  child: Icon(Icons.shopping_cart_outlined, size: 30,)),
-        Positioned(
-             right: 0,
-                    top: -2, // Adjust position if needed
-                 child: Container(
-                   height: 20,
-                 width: 20,
-                 padding: EdgeInsets.all(4),
-                 decoration: BoxDecoration(
-               color: Colors.red,
-                  borderRadius: BorderRadius.circular(14),
-    ),
-                   child: Text(
-                     "", //
-                     style: TextStyle(
-                       color: Colors.white,
-                       fontSize: 10,
-                       fontWeight: FontWeight.bold,
-                     ),
-                     textAlign: TextAlign.center,
-                   ),
-        ),
-        ),
-    ]
+              children: [
+                InkWell(
+                  onTap: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => CartsPage()));
+                  },
+                  child: Icon(Icons.shopping_cart_outlined, size: 30),
+                ),
+                Positioned(
+                  right: 0,
+                  top: -2,
+                  child: BlocBuilder<CartBloc, CartState>(
+                    builder: (context, cartState) {
+                      int itemCount = 0;
+                      if (cartState is CartUpdatedState) {
+                        itemCount = cartState.cartItems.length;
+                      }
+                      return itemCount > 0
+                          ? Container(
+                        height: 20,
+                        width: 20,
+                        padding: EdgeInsets.all(4),
+                        decoration: BoxDecoration(
+                          color: Colors.red,
+                          borderRadius: BorderRadius.circular(14),
+                        ),
+                        child: Center(
+                          child: Text(
+                            itemCount.toString(),
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 10,
+                              fontWeight: FontWeight.bold,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                      )
+                          : SizedBox(); // Hide if count is 0
+                    },
+                  ),
+                ),
+              ],
             ),
-          )
+          ),
         ],
 
       ),
@@ -145,7 +160,7 @@ class _CataloguePageState extends State<CataloguePage> {
                                      ),
                                      borderRadius: BorderRadius.circular(10),
                                    ),
-                                   child: InkWell(
+                                   child: GestureDetector(
                                        onTap: (){
                                          BlocProvider.of<CartBloc>(context).add(AddToCartEvent(mItems.products[index]));
 
