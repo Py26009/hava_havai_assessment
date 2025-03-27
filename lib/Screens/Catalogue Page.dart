@@ -63,7 +63,7 @@ class _CataloguePageState extends State<CataloguePage> {
                         width: 20,
                         padding: EdgeInsets.all(4),
                         decoration: BoxDecoration(
-                          color: Colors.red,
+                          color: Color(0xffFF660E),
                           borderRadius: BorderRadius.circular(14),
                         ),
                         child: Center(
