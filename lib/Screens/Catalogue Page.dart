@@ -57,7 +57,7 @@ class _CataloguePageState extends State<CataloguePage> {
                   borderRadius: BorderRadius.circular(14),
     ),
                    child: Text(
-                     "", // Replace with your cart count variable
+                     "", //
                      style: TextStyle(
                        color: Colors.white,
                        fontSize: 10,
